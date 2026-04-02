@@ -339,7 +339,7 @@ PostgreSQL
 ### 10. Журналирование (logging)
 
 10.1  Изменили настройки журналирования в `postgresql.conf`. Включили `logging_collector = on`, задали каталог логов (`pg_log`), формат имени файла и параметры логирования (`log_statement = 'all'`, `log_connections = on`, `log_disconnections = on`, `log_duration = on`).
->![]<img width="823" height="336" alt="image" src="https://github.com/user-attachments/assets/e70b77c4-cd0b-424c-8ade-b21ff088410c" />
+><img width="823" height="336" alt="image" src="https://github.com/user-attachments/assets/e70b77c4-cd0b-424c-8ade-b21ff088410c" />
 
 10.2  Перезапустили сервис PostgreSQL.
 10.3  Проверили, что сервис работает.

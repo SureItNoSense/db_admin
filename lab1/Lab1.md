@@ -11,28 +11,24 @@
 >```sql
 >apt-get upgrade
 >```
->![](media/image1.png)
+>![](image/img0.png)
 
 ### 2.  Установка PostgreSQL
 2.1  Устанавливаем PostgreSQL: 
 >```bash
 >apt-get install postgresql
 >```
->![](media/image2.png)
->![](media/image3.png)
->![](media/image4.png)
-
 ### 2.2  Устанавливаем клиентский пакет: 
 > ```sql
 > apt-get install PostgreSQL-client
 > ```
->![](media/image5.png)
+>![](image/img1.png)
 
 ### 2.3  Проверяем статус службы: 
 >```bash
 >systemctl status PostgreSQL
 >```
->![](media/image6.png)
+>![](image/img2.png)
 
 ### 3. Создание служебной учётной записи
 3.1  Выводим содержимое файла `/etc/passwd`, где хранятся сведения о
@@ -40,7 +36,7 @@
 >```bash 
 > cat /etc/passwd
 >```
->![](media/image7.png)
+>![](image/img3.png)
 
 3.2  Для администрирования баз данных переходим на учётную запись
     администратора: 
@@ -63,7 +59,7 @@
 >```bash
 >exit
 >```
->![](media/image8.png)
+>![](image/img4.png)
 
 ### Пользователь postgres в системе:
 
@@ -85,7 +81,7 @@
 >```bash
 >sudo ls /etc/postgresql/13/main
 >```
->![](media/image9.png) 
+>![](image/img5.png) 
 
 4.3 Редактируем конфигурационный файл `PostgreSQL`, изменяя порт с 5432 на 5433:
 >```sql
@@ -96,7 +92,7 @@
 > ```sql
 > sudo systemctl restart postgresql
 >```
->![](media/image11.png)
+>![](image/img6.png) 
 
 ### Основные файлы конфигурации:
 `postgresql.conf` - Основные настройки сервера. Этот файл управляет параметрами работы PostgreSQL, такими как:
@@ -138,7 +134,7 @@ PostgreSQL
 > sudo systemctl enable postgresql
 >```
 >
->![](media/image12.png)
+>![](image/img7.png) 
 
 ### 6.  Создание тестовой базы данных
 
@@ -166,14 +162,15 @@ PostgreSQL
 >```bash
 >\l
 >```
->![](media/image13.png)
+>![](image/img8.png) 
+>![](image/img9.png) 
 
 6.6 Входим в базу данных под созданным пользователем:
 >```sql
 > psql -U bihtor -d dbbihtor -W;
 >```
 >
->![](media/image14.png) 
+>![](image/img10.png) 
   
 6.7 Получаем ошибку: `FATAL: Peer authentication
     failed for user "bihtor"`. Это происходит из-за одноранговой
@@ -185,10 +182,8 @@ PostgreSQL
 > ```sql
 > sudo nano /etc/postgresql/13/main/pg_hba.conf
 > ```
-> ![](media/image15.png)
-> ![](media/image16.png)
-> ![](media/image17.png)
->![](media/image18.png)
+>![](image/img13.png).
+>![](image/img12.png).
 
 6.9 Находим строку, относящуюся к локальным подключениям, и заменяем peer на md5:
 
@@ -196,8 +191,7 @@ PostgreSQL
 > ```sql
 > sudo systemctl restart postgresql
 >```
->![](media/image17.png)
->![](media/image19.png)
+>![](image/img15.png).
 
 ### 7.  Знакомство со схемами
 
@@ -230,7 +224,8 @@ PostgreSQL
 > ```sql
 > SELECT * FROM test_schema.test_table;
 > ```
->![](media/image20.png)
+>![](image/img16.png).
+>![](image/img17.png).
 
 В `PostgreSQL` схема - это логическая структура внутри базы данных,
 которая группирует объекты, такие как таблицы, представления, индексы,
@@ -264,7 +259,7 @@ PostgreSQL
 >```sql
 >SELECT * FROM public.cars;
 >```
->![](media/image21.png)
+>![](image/img18.png).
 >
 
 8.2  Обновили через `UPDATE` и удалили через `DELETE`:
@@ -287,46 +282,44 @@ PostgreSQL
 >```sql
 >SELECT * FROM public.cars;
 >```
->![](media/image22.png)
+>![](image/img19.png).
 
 8.3  Создали таблицу и добавили данные:
 
 >a. Создали таблицу `test_table_leo` в схеме `test_schema`с полями `id` (автоинкрементный первичный ключ), `name` (название) и `country` (страна):
 >
->![](media/image23.png)
+>![](image/img20.png).
 >
 >b.  Добавили в неё данные:
 >
->![](media/image24.png)
+>![](image/img21.png).
 >
 >c.  Пробовали выбрать данные без указания схемы, но получили ошибку, так как таблица находится в `test_schema`, а поиск по умолчанию идёт в `public`. Подметим, что вывод таблицы `cars` при этом спокойно выводится.
 >
->![](media/image25.png)
->
->![](media/image26.png)
+>![](image/img22.png).
 >
 >d.  Чтобы избавиться от ошибки, настроили `search_path`,
 > установили порядок поиска схем, добавив `test_schema` перед `public`.
 > Пробуем вывести и все выводится без ошибок, потому что мы находимся уже в другом месте:
 >
->![](media/image27.png)
+>![](image/img23.png).
 
 
 ### 9.  Настройка локальных и сетевых подключений
 
 9.1 Ввели команду для открытия файла и раскомментировали строку listen_addresses, убрав «#» и заменив «localhost» на «*». Это позволяет PostgreSQL принимать подключения
 не только локально, но и с других устройств в сети:
->![](media/image28.png)>![](media/image29.png)
+>![](image/img14.png).
 
 9.2  По аналогии зашли в файл `pg_hba.conf` и добавили строку: эта настройка разрешает подключения по сети (`host`) ко всем базам данных (all) от всех пользователей (all) с любого IP-адреса (`0.0.0.0/0`) с использованием метода аутентификации `md5`.
 >    
->![](media/image30.png)
+>![](image/img01.png).
 
 9.3  Перезапустили PostgreSQL, затем проверили, что сервер слушает подключения на порту `5433` для всех IP-адресов (`0.0.0.0:*`) и
 >```bash
 >ss -tulnp | grep postgres
 >```
->![](media/image31.png)
+>![](media/image24.png)
 
 Команда `ss -tulnp | grep postgres` используется для просмотра сетевых
 соединений PostgreSQL:
@@ -341,14 +334,12 @@ PostgreSQL
 
 9.4  Получаем адрес виртуальной машины командой `hostname -I` и производим подключение через pgadmin:
 >
->![](media/image32.png)
->![](media/image33.png)
->![](media/image34.png)
+>![](image/img25.png).
 
 ### 10. Журналирование (logging)
 
 10.1  Изменили настройки журналирования в `postgresql.conf`. Включили `logging_collector = on`, задали каталог логов (`pg_log`), формат имени файла и параметры логирования (`log_statement = 'all'`, `log_connections = on`, `log_disconnections = on`, `log_duration = on`).
->![](media/image35.png)
+><img width="823" height="336" alt="image" src="https://github.com/user-attachments/assets/e70b77c4-cd0b-424c-8ade-b21ff088410c" />
 
 10.2  Перезапустили сервис PostgreSQL.
 10.3  Проверили, что сервис работает.
@@ -356,7 +347,8 @@ PostgreSQL
 >```bash
 >ls /var/lib/postgresql/13/main/pg_log/
 >```
->![](media/image36.png)
+>![](image/img26.png)
+>![](image/img27.png)
 
 10.5  Открыли лог и проверили записи: 
 >```sql
@@ -366,7 +358,7 @@ PostgreSQL
 В логах видно SQL-запросы, подключения, отключения и время выполнения
 запросов. Это подтверждает, что журналирование работает и новые записи
 появляются.
->![](media/image37.png)
+>![](image/img28.png)
 
 ### 11. Назначение ролей и прав
 
@@ -405,13 +397,11 @@ PostgreSQL
 >```sql
 >GRANT SELECT, INSERT, UPDATE ON public.cars TO limited_user;
 >```
->![](media/image38.png)
->![](media/image38.png)
->![](media/image38.png)
+>![](image/img29.png)
 
 Теперь этот пользователь может читать, добавлять и изменять данные, но
 не может удалять записи или изменять структуру таблицы.
->![](media/image39.png)
+>![](image/img30.png)
 
 11.9  Создаём роль `god` и даём ей полные права на таблицу `cars`: 
 >```sql
@@ -430,7 +420,7 @@ PostgreSQL
 >```
 
 Теперь `limited_user`, который ранее не имел прав на `DELETE`, теперь может удалять данные благодаря наследованию от `god`.
->![](media/image40.png)
+>![](image/img31.png)
 >
 >Роль `limited_user` унаследовала полные права на таблицу через `god`, что
 >позволило выполнять `DELETE`, несмотря на изначальные ограничения.

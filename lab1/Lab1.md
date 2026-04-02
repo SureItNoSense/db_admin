@@ -1,4 +1,4 @@
-# Отчет по лабораторной работе №1 базовая настройка PostgreSQL на Debian
+<img width="823" height="336" alt="image" src="https://github.com/user-attachments/assets/e70b77c4-cd0b-424c-8ade-b21ff088410c" /># Отчет по лабораторной работе №1 базовая настройка PostgreSQL на Debian
 ### Бихтор Л.А. ИС-22
 
 ### 1.  Подготовка среды
@@ -339,7 +339,7 @@ PostgreSQL
 ### 10. Журналирование (logging)
 
 10.1  Изменили настройки журналирования в `postgresql.conf`. Включили `logging_collector = on`, задали каталог логов (`pg_log`), формат имени файла и параметры логирования (`log_statement = 'all'`, `log_connections = on`, `log_disconnections = on`, `log_duration = on`).
->![](media/image35.png)
+>![](image/img35.png)
 
 10.2  Перезапустили сервис PostgreSQL.
 10.3  Проверили, что сервис работает.
@@ -347,8 +347,8 @@ PostgreSQL
 >```bash
 >ls /var/lib/postgresql/13/main/pg_log/
 >```
->![](media/image26.png)
->![](media/image27.png)
+>![](image/img26.png)
+>![](image/img27.png)
 
 10.5  Открыли лог и проверили записи: 
 >```sql
@@ -358,7 +358,7 @@ PostgreSQL
 В логах видно SQL-запросы, подключения, отключения и время выполнения
 запросов. Это подтверждает, что журналирование работает и новые записи
 появляются.
->![](media/image28.png)
+>![](image/img28.png)
 
 ### 11. Назначение ролей и прав
 
@@ -397,11 +397,11 @@ PostgreSQL
 >```sql
 >GRANT SELECT, INSERT, UPDATE ON public.cars TO limited_user;
 >```
->![](media/image29.png)
+>![](image/img29.png)
 
 Теперь этот пользователь может читать, добавлять и изменять данные, но
 не может удалять записи или изменять структуру таблицы.
->![](media/image30.png)
+>![](image/img30.png)
 
 11.9  Создаём роль `god` и даём ей полные права на таблицу `cars`: 
 >```sql
@@ -420,7 +420,7 @@ PostgreSQL
 >```
 
 Теперь `limited_user`, который ранее не имел прав на `DELETE`, теперь может удалять данные благодаря наследованию от `god`.
->![](media/image31.png)
+>![](image/img31.png)
 >
 >Роль `limited_user` унаследовала полные права на таблицу через `god`, что
 >позволило выполнять `DELETE`, несмотря на изначальные ограничения.

@@ -7,11 +7,11 @@
 
 >Открываем файл конфигурации и вносим изменения:
 >```bash
->sudo nano /etc/postgresql/13/main/postgresql.conf
+>sudo nano /etc/postgresql/15/main/postgresql.conf
 >```
 >
->![](media/image1.png)
->![](media/image2.png) 
+>![](image/1.png)
+>![](image/2.png) 
 
 ### В файле конфигурации были изменены следующие параметры:
 - `shared_buffers` = 1250MB - размер буферного кеша PostgreSQL. Используется для хранения данных в RAM, снижая нагрузку на диск. Обычно 25-40% от оперативной памяти;
@@ -26,7 +26,6 @@
 >```bash
 >sudo systemctl restart postgresql
 >```
->![](media/image3.png)
 
 ### Проверяем, что изменения применились: 
 >```bash
@@ -34,7 +33,7 @@
 >SHOW maintenance_work_mem;
 >SHOW effective_cache_size;`.
 >```
->![](media/image4.png)
+>![](image/3.png)
 >
 > Вывод подтверждает, что новые параметры успешно загружены.
 >
@@ -52,17 +51,17 @@
 >```bash
 >INSERT INTO player(place) SELECT generate_series(1, 999999);
 >```
->![](media/image5.png)
+>![](image/4.png)
 
 ### Выполним `EXPLAIN` и `EXPLAIN ANALYZE` для поиска записи с `place = 752020`:
 >```bash
 >EXPLAIN SELECT * FROM player WHERE place = 752020;
 >```
->![](media/image5.png)
+>![](image/4.png)
 >```bash
 >EXPLAIN ANALYZE SELECT * FROM player WHERE place = 752020;
 >```
->![](media/image6.png)
+>![](image/5.png)
 >
 >Вывод показывает, что PostgreSQL выполняет последовательное сканирование
 >(`Seq Scan`) всей таблицы, проверяя каждую строку.
@@ -80,8 +79,7 @@
 >```bash
 >EXPLAIN ANALYZE SELECT * FROM player WHERE place = 752020;
 >```
->![](media/image7.png)  
->![](media/image8.png)
+>![](image/6.png)  
 
 ### Преимущества `Index Scan`:
 - Запрос выполняется в сотни раз быстрее;
@@ -135,14 +133,14 @@
 >```sql
 >SELECT check_place(18);
 >```
->![](media/image9.png)
+>![](image/7.png)
 
 ### Проверка результата
 >Проверим, добавилась ли запись:
 >```sql
 >SELECT * FROM player WHERE place = 18;
 >```
->![](media/image10.png)
+>![](image/8.png)
 >
 >Запись с числом 18 действительно добавлена.
 
@@ -178,10 +176,10 @@
 >- Каждая строка (`FOR EACH ROW`) перед изменением проверяется через функцию `check_positive_place()`;
 >- Если значение `place` меньше 0, триггер вызовет ошибку и не даст выполнить запрос.
 > 
->![](media/image11.png)
+>![](image/11.png)
 
 ### Проверяем работу триггера и триггерной функции:
->![](media/image12.png)
+>![](image/10.png)
 
 Как результат видим, что при попытке ввода отрицательного значения или  
 обновления существующей записи на отрицательное значение срабатывает  
@@ -209,13 +207,13 @@ PostgreSQL может автоматически выполнять очистк
 >```sql
 >SHOW autovacuum;
 >```
->![](media/image13.png)
+>![](image/12.png)
 
 ### Если требуется очистить таблицу вручную:
 >```sql
 >VACUUM ANALYZE player;
 >```
->![](media/image14.png)
+>![](image/13.png)
 
 ### Посмотреть дату последнего autovacuum или ручного VACUUM:
 >```sql
@@ -229,7 +227,7 @@ PostgreSQL может автоматически выполнять очистк
 >- `last_autovacuum` — время последнего autovacuum;  
 >- `last_vacuum` — время последнего ручного VACUUM.
 >
->![](media/image15.png)
+>![](image/14.png)
 
 ### Можно также проверить использование индексов:
 >```sql
@@ -242,7 +240,7 @@ PostgreSQL может автоматически выполнять очистк
 >- `idx_tup_read` — сколько строк прочитано с индексом;  
 >- `idx_tup_fetch` — сколько строк реально использовано.
 >
->![](media/image16.png)
+>![](image/15.png)
 
 Таким образом, `VACUUM` и `ANALYZE` помогают поддерживать производительность базы,  
 очищая ненужные данные и обновляя статистику для оптимизации запросов.
